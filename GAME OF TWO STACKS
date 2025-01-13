@@ -1,0 +1,63 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'twoStacks' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER maxSum
+#  2. INTEGER_ARRAY a
+#  3. INTEGER_ARRAY b
+
+def twoStacks(maxSum, a, b):
+    sum = 0
+    count = 0
+    index_a = 0
+    while index_a < len(a) and sum + a[index_a] <= maxSum:
+        sum += a[index_a]
+        index_a += 1
+        count += 1
+
+    max_count = count
+    for index_b in range(len(b)):
+        sum += b[index_b]
+        while sum > maxSum and index_a > 0:
+            index_a -= 1
+            sum -= a[index_a]
+            count -= 1
+        if sum > maxSum:
+            break
+        count += 1
+        max_count = max(max_count, count)
+
+    return max_count
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    g = int(input().strip())
+
+    for g_itr in range(g):
+        first_multiple_input = input().rstrip().split()
+
+        n = int(first_multiple_input[0])
+
+        m = int(first_multiple_input[1])
+
+        maxSum = int(first_multiple_input[2])
+
+        a = list(map(int, input().rstrip().split()))
+
+        b = list(map(int, input().rstrip().split()))
+
+        result = twoStacks(maxSum, a, b)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
